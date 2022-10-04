@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Subject} from "rxjs";
 
 @Component({
@@ -15,14 +15,21 @@ export class LoginPageComponent implements OnInit {
   form: FormGroup | any;
   isSubmitted: boolean = false;
   errors$: Subject<string> = new Subject<string>();
+  message: string | undefined;
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['loginAgain']) {
+        this.message = 'Пожалуйста авторизируйтесь.';
+      }
+    })
     this.initialize();
     this.errors$ = this.authService.errors$;
   }

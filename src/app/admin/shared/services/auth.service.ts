@@ -10,7 +10,7 @@ import {UserInterface} from "../interfaces/user.interface";
 @Injectable()
 export class AuthService {
 
-  public errors$: Subject<string> = new Subject<string>();
+  errors$: Subject<string> = new Subject<string>();
 
   constructor(private http: HttpClient) {
   }
