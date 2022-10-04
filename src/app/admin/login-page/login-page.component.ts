@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
 import {Router} from "@angular/router";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-login-page',
@@ -12,6 +13,8 @@ import {Router} from "@angular/router";
 export class LoginPageComponent implements OnInit {
 
   form: FormGroup | any;
+  isSubmitted: boolean = false;
+  errors$: Subject<string> = new Subject<string>();
 
   constructor(
     private authService: AuthService,
@@ -21,6 +24,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialize();
+    this.errors$ = this.authService.errors$;
   }
 
   get f() {
@@ -35,19 +39,24 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit() {
-    if(this.form.invalid) {
+    if (this.form.invalid) {
       return;
-    }
+    } else {
+      this.isSubmitted = true;
 
-    const user: UserInterface = {
-      email: this.form.value.email,
-      password: this.form.value.password,
-    }
+      const user: UserInterface = {
+        email: this.form.value.email,
+        password: this.form.value.password,
+      }
 
-    this.authService.login(user).subscribe(() => {
-      this.form.reset();
-      this.router.navigate(['/admin', 'dashboard']);
-    })
+      this.authService.login(user).subscribe(() => {
+        this.form.reset();
+        this.router.navigate(['/admin', 'dashboard']);
+        this.isSubmitted = false;
+      }, error => {
+        this.isSubmitted = false;
+      })
+    }
   }
 
 }
