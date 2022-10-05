@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PostInterface} from "../shared/interfaces/post.interface";
 
@@ -11,7 +11,8 @@ export class CreatePageComponent implements OnInit {
 
   form: FormGroup | any;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.initialize();
@@ -26,16 +27,16 @@ export class CreatePageComponent implements OnInit {
   }
 
   submit() {
-    if(this.form) {
+    if (this.form.invalid) {
       return
-    } else {
-      const post: PostInterface = {
-        title: this.form.value.title,
-        text: this.form.value.text,
-        author: this.form.value.author,
-        date: new Date()
-      }
     }
+    const post: PostInterface = {
+      title: this.form.value.title,
+      text: this.form.value.text,
+      author: this.form.value.author,
+      date: new Date()
+    }
+    console.log(post)
   }
 
 }
