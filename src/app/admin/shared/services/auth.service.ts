@@ -7,7 +7,9 @@ import {FireBaseAuthResponse} from "../interfaces/fireBaseAuthResponse";
 import {environment} from "../../../../environments/environment";
 import {UserInterface} from "../interfaces/user.interface";
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class AuthService {
 
   errors$: Subject<string> = new Subject<string>();
@@ -15,7 +17,7 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  get token(): string | null {
+  get token(): any {
     const fbExpToken: undefined | string | null = localStorage.getItem('fb-exp-token');
 
     if (!!fbExpToken && Date.now() > +fbExpToken) {
