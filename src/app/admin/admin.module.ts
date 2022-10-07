@@ -12,6 +12,7 @@ import {SharedModule} from "../shared/shared.module";
 import {AuthGuard} from "./shared/auth.guard";
 import {SearchPipe} from "./shared/pipe/search.pipe";
 import { AlertComponent } from './shared/component/alert/alert.component';
+import {AlertService} from "./shared/services/alert.service";
 
 const routes: Routes = [
   {
@@ -43,7 +44,7 @@ const routes: Routes = [
     ReactiveFormsModule,
   ],
   exports: [RouterModule],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AlertService],
 })
 
 export class AdminModule {
