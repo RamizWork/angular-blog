@@ -1,15 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
+import {PostService} from "../../shared/post.service";
+import {switchMap} from "rxjs/operators";
+import {PostInterface} from "../shared/interfaces/post.interface";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-edit-page',
   templateUrl: './edit-page.component.html',
   styleUrls: ['./edit-page.component.scss']
 })
-export class EditPageComponent implements OnInit {
+export class EditPageComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  form: FormGroup | any;
+  post: PostInterface | undefined;
+  isSubmitted: boolean = false;
+  updateSubscription$: Subscription | undefined;
 
-  ngOnInit(): void {
+  constructor(private route: ActivatedRoute, private postService: PostService) {
   }
 
+  ngOnInit(): void {
+    this.route.params.pipe(
+      switchMap((params: Params) => {
+        return this.postService.getPostId([params['id']])
+      })
+    ).subscribe((post: PostInterface) => {
+      this.post = post;
+      this.form = new FormGroup({
+        title: new FormControl(post.title, Validators.required),
+        text: new FormControl(post.text, Validators.required),
+      });
+    });
+  }
+
+  submit() {
+    if (this.form.invalid) {
+      return;
+    }
+    this.isSubmitted = true;
+    this.updateSubscription$ = this.postService.updatePost({
+      id: this.post?.id,
+      text: this.form.value.text,
+      title: this.form.value.title,
+      date: new Date(),
+    }).subscribe(() => {
+      this.isSubmitted = false;
+    })
+  }
+
+  ngOnDestroy(): void {
+    if (this.updateSubscription$) {
+      this.updateSubscription$?.unsubscribe();
+    }
+  }
 }

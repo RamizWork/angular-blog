@@ -11,6 +11,7 @@ import {EditPageComponent} from './edit-page/edit-page.component';
 import {SharedModule} from "../shared/shared.module";
 import {AuthGuard} from "./shared/auth.guard";
 import {SearchPipe} from "./shared/pipe/search.pipe";
+import { AlertComponent } from './shared/component/alert/alert.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
     CreatePageComponent,
     EditPageComponent,
     SearchPipe,
+    AlertComponent,
   ],
   imports: [
     SharedModule,
