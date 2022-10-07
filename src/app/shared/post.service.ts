@@ -30,26 +30,32 @@ export class PostService {
     return this.http.get<PostInterface>(`${environment.fbDbUrl}/posts/${id}.json`)
       .pipe(
         map((post: PostInterface) => {
-          return {
-            ...post,
-            id,
-            date: new Date(),
+            return {
+              ...post,
+              id,
+              date: new Date(),
+            }
           }
-        })
+        )
       )
   }
 
   getAllPosts(): Observable<PostInterface[]> {
     return this.http.get(`${environment.fbDbUrl}/posts.json`)
-      .pipe(map((response: { [key: string]: any }) => {
-        return Object
-          .keys(response)
-          .map(key => ({
-            ...response[key],
-            id: key,
-            date: new Date(response[key].date)
-          }))
-      }))
+      .pipe(
+        map((response: { [key: string]: any }) => {
+            return Object
+              .keys(response)
+              .map(key => ({
+                    ...response[key],
+                    id: key,
+                    date: new Date(response[key].date)
+                  }
+                )
+              )
+          }
+        )
+      )
   }
 
   updatePost(post: PostInterface): Observable<PostInterface> {
