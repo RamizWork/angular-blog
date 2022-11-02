@@ -12,6 +12,13 @@ import {HomePageComponent} from './home-page/home-page.component';
 import {PostPageComponent} from './post-page/post-page.component';
 import {PostComponent} from './shared/components/post/post.component';
 import {SharedModule} from "./shared/shared.module";
+import {HeaderComponent} from './header/header.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastrModule} from "ngx-toastr";
+import {UserService} from "./shared/user.service";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
 
 registerLocaleData(ruLocale, 'ru');
 
@@ -28,14 +35,20 @@ const INTERCEPTOR_PROVIDER: Provider = {
     MainLayoutComponent,
     HomePageComponent,
     PostPageComponent,
-    PostComponent
+    PostComponent,
+    HeaderComponent,
   ],
   imports: [
     SharedModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
   ],
-  providers: [INTERCEPTOR_PROVIDER],
+  providers: [INTERCEPTOR_PROVIDER, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

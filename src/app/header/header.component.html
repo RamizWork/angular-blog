@@ -1,0 +1,39 @@
+<nav class="navbar bg-primary">
+  <h1 class="header__title">
+    <a [routerLink]="['']">Main page</a>
+  </h1>
+
+  <ul *ngIf="!isAuthenticated">
+    <li routerLinkActive="active">
+      <a [routerLink]="['/admin/login']">Login</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/admin/sing-up']">Sing-up</a>
+    </li>
+  </ul>
+
+
+  <ul *ngIf="isAuthenticated">
+
+    <li routerLinkActive="active">
+      <a [routerLink]="['/admin', 'dashboard']">Post page</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/admin', 'create']">Create post</a>
+    </li>
+    <li class="drop__down_wrapper menu">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <div class="user" *ngIf="userInfo$ | async as userEmail">
+          <img class="user__img" [src]="" alt="">
+          <span class="user__email">{{userEmail}}</span>
+        </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="['/admin', 'profile']">My profile</button>
+        <button mat-menu-item (click)="logout($event)">Logout</button>
+      </mat-menu>
+    </li>
+  </ul>
+</nav>
+
+<ng-container *ngIf="isAuthenticated$ | async"></ng-container>

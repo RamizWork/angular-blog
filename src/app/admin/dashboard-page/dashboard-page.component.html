@@ -1,33 +1,46 @@
 <div *ngIf="posts?.length; else loading">
   <div class="form-control">
-    <input type="text" placeholder="Найти пост ..." [(ngModel)]="searchPost">
+    <input type="text" placeholder="Search post ..." [(ngModel)]="searchPost">
   </div>
   <table>
     <thead>
     <tr>
       <th>#</th>
-      <th>Автор</th>
-      <th>Название</th>
-      <th>Дата</th>
-      <th>Действие</th>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Email user</th>
+      <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let post of posts | searchPosts:searchPost; let idx = index">
-      <td>{{idx + 1}}</td>
-      <td>{{post.author}}</td>
-      <td>{{post.title}}</td>
-      <td>{{post.date | date: 'medium': 'ru': 'ru'}}</td>
-      <td>
-        <button class="btn btn-link open" [routerLink]="['/admin', 'post', post.id, 'edit']">Открыть</button>
-        <a (click)="remove(post.id)">Удалить</a>
-      </td>
-    </tr>
+    <ng-container *ngIf="userEmail$ | async as userEmail">
+      <tr *ngFor="let post of posts | searchPosts:searchPost; let idx = index">
+        <td>{{idx + 1}}</td>
+        <td>{{post.author}}</td>
+        <td>{{post.title}}</td>
+        <td>{{post.date | date: 'medium': 'ru': 'ru'}}</td>
+        <td>{{post.emailOwner}}</td>
+        <td>
+          <button
+            [disabled]="userEmail !== post.emailOwner"
+            class="btn btn-link open"
+            [routerLink]="['/admin', 'post', post.id, 'edit']"
+          >Edit
+          </button>
+          <button
+            [disabled]="userEmail !== post.emailOwner"
+            (click)="remove(post.id)"
+          >Delete
+          </button>
+        </td>
+      </tr>
+    </ng-container>
     </tbody>
   </table>
 </div>
 
 <ng-template #loading>
-  <p class="text-center">Идет загрузка</p>
+  <p class="text-center">Posts not created ...</p>
 </ng-template>
 

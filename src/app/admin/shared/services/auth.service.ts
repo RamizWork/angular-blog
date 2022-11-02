@@ -1,20 +1,24 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
+import {ToastrService} from "ngx-toastr";
 
 import {FireBaseAuthResponse} from "../interfaces/fireBaseAuthResponse";
 import {environment} from "../../../../environments/environment";
 import {UserInterface} from "../interfaces/user.interface";
+import {FireBaseSingUpResponseInterface} from "../interfaces/fireBaseSingUpResponse.interface";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
 
-  errors$: Subject<string> = new Subject<string>();
+  private isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private userInfo$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  private displayName$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastrService: ToastrService) {
   }
 
   get token(): any {
@@ -22,45 +26,102 @@ export class AuthService {
 
     if (!!fbExpToken && Date.now() > +fbExpToken) {
       this.logout();
+      this.isAuthenticated$.next(false);
       return null;
     }
-
     return localStorage.getItem('fb-token');
+  }
+
+  singUp(user: UserInterface): Observable<FireBaseAuthResponse | unknown> {
+    user.returnSecureToken = true;
+    return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.apiKey}`, user)
+      .pipe(
+        tap(value => {
+          AuthService.setSingUpToken(value);
+          this.isAuthenticated$.next(true);
+          this.userInfo$.next(value.email);
+          localStorage.setItem('id-token', <string>value.idToken);
+        }),
+        catchError(this.handleErrorForSingUp.bind(this))
+      )
+  }
+
+  handleErrorForSingUp(error: HttpErrorResponse): any {
+    const message = error.error.error.message;
+
+    switch (message) {
+      case "INVALID_EMAIL":
+        this.toastrService.error('Invalid email');
+        break;
+      case "EMAIL_EXISTS":
+        this.toastrService.error('Email exists');
+        break;
+      case "OPERATION_NOT_ALLOWED":
+        this.toastrService.error('Operation not allowed');
+        break;
+      case "TOO_MANY_ATTEMPTS_TRY_LATER":
+        this.toastrService.error('To many attempts try later ');
+        break;
+    }
+    return throwError(message);
   }
 
   login(user: UserInterface): Observable<FireBaseAuthResponse | null> {
     user.returnSecureToken = true;
     return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
       .pipe(
-        tap(AuthService.setToken),
-        catchError(this.handleError.bind(this))
+        tap((value) => {
+          AuthService.setToken(value);
+          this.isAuthenticated$.next(true);
+          this.userInfo$.next(value.email);
+          localStorage.setItem('id-token', <string>value.idToken);
+        }),
+        catchError(this.loginHandleError.bind(this))
       )
   }
 
-  handleError(error: HttpErrorResponse): Observable<any> {
+  loginHandleError(error: HttpErrorResponse): Observable<any> {
     const {message} = error.error.error;
 
     switch (message) {
       case 'INVALID_EMAIL':
-        this.errors$.next('Неверный email');
+        this.toastrService.error('Invalid email');
         break;
       case 'INVALID_PASSWORD':
-        this.errors$.next('Неверный пароль');
+        this.toastrService.error('Invalid password');
         break;
       case 'EMAIL_NOT_FOUND':
-        this.errors$.next('Email не найден');
+        this.toastrService.error('Email not found');
         break;
     }
     return throwError(error);
   }
 
-  isAuthenticated(): boolean {
-    return !!this.token;
+  getDisplayName(): BehaviorSubject<string | null> {
+    return this.displayName$;
   }
 
-  private static setToken(response: FireBaseAuthResponse | null) {
+  getUserInfo(): BehaviorSubject<string | null> {
+    return this.userInfo$;
+  }
+
+  getIsAuthenticated(): BehaviorSubject<boolean> {
+    return this.isAuthenticated$;
+  }
+
+  logout() {
+    AuthService.setToken(null);
+    this.setIsAuthenticatedStatus(false);
+  }
+
+  setIsAuthenticatedStatus(status: boolean): void {
+    this.isAuthenticated$.next(status);
+  }
+
+  private static setSingUpToken(response: FireBaseSingUpResponseInterface) {
     if (response) {
       const expTimeToken = new Date(Date.now() + +<string>response.expiresIn * 1000);
+
       localStorage.setItem('fb-token', <string>response.idToken);
       localStorage.setItem('fb-exp-token', expTimeToken.toString());
     } else {
@@ -68,7 +129,15 @@ export class AuthService {
     }
   }
 
-  logout() {
-    AuthService.setToken(null);
+  private static setToken(response: FireBaseAuthResponse | null) {
+    if (response) {
+      const expTimeToken = new Date(Date.now() + +<string>response.expiresIn * 1000);
+
+      localStorage.setItem('fb-token', <string>response.idToken);
+      localStorage.setItem('fb-exp-token', expTimeToken.toString());
+    } else {
+      localStorage.clear();
+    }
   }
+
 }

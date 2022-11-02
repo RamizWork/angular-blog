@@ -1,0 +1,69 @@
+mat-card {
+  position: relative;
+  display: flex;
+  background-color: white;
+  margin: 0 auto;
+  width: 550px;
+  border-radius: 8px;
+
+
+  .wrapper__edit_icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+  }
+
+  .user__info_edit {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .user__info {
+    display: flex;
+    color: black;
+
+    .first__name_wrapper {
+      margin-right: 20px;
+    }
+
+    .label {
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 19px;
+      color: #414A54;
+    }
+
+    .name {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #414A54;
+    }
+  }
+
+  .user__img {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    margin: 0 20px 0 0;
+
+    .user__photo {
+      width: 100%;
+      height: 60px;
+      object-fit: cover;
+    }
+  }
+}
+
+
+

@@ -1,0 +1,27 @@
+.navbar {
+  .header__title {
+    margin: 0;
+    font-weight: 300;
+  }
+
+  ul {
+    align-items: center;
+
+    .user {
+      display: flex;
+      cursor: pointer;
+    }
+
+    .user__email {
+      margin-left: 10px;
+    }
+  }
+
+  .user__img {
+    height: 30px;
+    width: 30px;
+    background-color: #888888;
+  }
+
+}
+

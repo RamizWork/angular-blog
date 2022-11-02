@@ -1,5 +1,5 @@
 <form class="card" [formGroup]="form" (ngSubmit)="submit()">
-  <h2>Войти в панель администратора</h2>
+  <h2>Login form</h2>
 
   <div class="alert" *ngIf="errors$ | async as error">
     {{error}}
@@ -15,14 +15,15 @@
     <input id="email" type="email" formControlName="email">
     <div *ngIf="form.get('email').touched && form.get('email').invalid"
          class="validation">
-      <small>Error</small>
+      <small *ngIf="form.get('email').touched && form.get('email').errors?.required">Email must not be empty</small>
+      <small *ngIf="form.get('email').touched && form.get('email').invalid">Enter correct email</small>
     </div>
   </div>
 
   <div
     [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
     class="form-control">
-    <label for="password">Пароль</label>
+    <label for="password">Password</label>
     <input id="password" type="text" formControlName="password">
 
     <div
@@ -30,17 +31,17 @@
       class="validation">
 
       <small *ngIf="form.get('password').touched && form.get('password').errors?.required">
-        Поле пароль не должно быть пустым
+        Password must not be empty
       </small>
       <small *ngIf="form.get('password')?.errors.minlength">
-        Длинна пароля не может быть меньше
+        Length password not be less
         {{form.get('password')?.errors.minlength.requiredLength}}
-        символов. Сейчас количество
+        symbols. Now quantity
         {{form.get('password')?.errors.minlength.actualLength}}
       </small>
     </div>
 
   </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSubmitted">Войти</button>
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSubmitted">Login</button>
 </form>

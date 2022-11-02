@@ -16,10 +16,11 @@ export class PostService {
     return this.http.post<PostInterface>(`${environment.fbDbUrl}/posts.json`, post)
       .pipe(
         map((response: PostInterface | any) => {
+          console.log(response)
             return {
               ...post,
               id: response.name,
-              data: new Date(post.date),
+              date: new Date(post.date),
             }
           }
         )

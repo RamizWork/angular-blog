@@ -2,7 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PostInterface} from "../shared/interfaces/post.interface";
 import {PostService} from "../../shared/post.service";
-import {AlertService} from "../shared/services/alert.service";
+import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
+import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
+import {AuthService} from "../shared/services/auth.service";
 
 @Component({
   selector: 'app-create-page',
@@ -12,8 +16,14 @@ import {AlertService} from "../shared/services/alert.service";
 export class CreatePageComponent implements OnInit {
 
   form: FormGroup | any;
+  createPost$: Observable<any> | undefined;
 
-  constructor(private postsService: PostService, private alertService: AlertService) {
+  constructor(
+    private postsService: PostService,
+    private toastrService: ToastrService,
+    private router: Router,
+    private authService: AuthService
+  ) {
   }
 
   ngOnInit(): void {
@@ -32,16 +42,21 @@ export class CreatePageComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
+    const email = this.authService.getUserInfo().getValue();
     const post: PostInterface = {
       title: this.form.value.title,
       text: this.form.value.text,
       author: this.form.value.author,
-      date: new Date()
+      date: new Date(),
+      emailOwner: email ? email : ''
     }
-    this.postsService.create(post).subscribe(() => {
-      this.form.reset();
-      this.alertService.success('Пост был успешно создан');
-    })
+    this.createPost$ = this.postsService.create(post).pipe(
+      tap(() => {
+        this.form.reset();
+        this.router.navigate(['/admin/dashboard']);
+        this.toastrService.success('Post created');
+      })
+    )
   }
 
 }

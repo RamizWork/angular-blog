@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PostService} from "../../shared/post.service";
 import {switchMap} from "rxjs/operators";
 import {PostInterface} from "../shared/interfaces/post.interface";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {AlertService} from "../shared/services/alert.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-edit-page',
@@ -19,7 +19,12 @@ export class EditPageComponent implements OnInit, OnDestroy {
   isSubmitted: boolean = false;
   updateSubscription$: Subscription | undefined;
 
-  constructor(private route: ActivatedRoute, private postService: PostService, private alertService: AlertService) {
+  constructor(
+    private route: ActivatedRoute,
+    private postService: PostService,
+    private toastrService: ToastrService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
@@ -48,8 +53,9 @@ export class EditPageComponent implements OnInit, OnDestroy {
       date: new Date()
     }).subscribe(() => {
       this.isSubmitted = false;
-      this.alertService.warning('Пост успешно изменен')
     })
+    this.toastrService.success('Post changed');
+    this.router.navigate(['/admin/dashboard']);
   }
 
   ngOnDestroy(): void {

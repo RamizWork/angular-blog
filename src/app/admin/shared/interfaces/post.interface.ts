@@ -4,4 +4,5 @@ export interface PostInterface {
   text: string;
   author?: string;
   date: Date;
+  emailOwner?: string;
 }

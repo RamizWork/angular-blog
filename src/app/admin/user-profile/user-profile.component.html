@@ -1,0 +1,25 @@
+<mat-card>
+  <div class="wrapper__edit_icon" (click)="editProfile()">
+    <img #imgProfile class="icon" [src]="'assets/edit_img2.png'" alt="edit-icon">
+  </div>
+  <div class="user__img">
+    <img class="user__photo" src="assets/user_icon.png" alt="">
+  </div>
+  <div class="user__info">
+    <div class="first__name_wrapper">
+      <div class="label">Full name</div>
+      <ng-container *ngIf="displayName$ | async as displayName; else noName">
+        <div class="name">{{displayName.length ? displayName : '-'}}</div>
+      </ng-container>
+      <ng-template #noName>
+        <div class="name">-</div>
+      </ng-template>
+    </div>
+    <div>
+      <div class="label">Email</div>
+      <ng-container *ngIf="userDataProfile$ | async as userDataProfile">
+        <div class="name">{{userDataProfile.users[0].email}}</div>
+      </ng-container>
+    </div>
+  </div>
+</mat-card>

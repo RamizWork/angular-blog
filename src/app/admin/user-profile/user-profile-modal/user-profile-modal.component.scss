@@ -1,0 +1,60 @@
+.btn__close {
+  margin-right: 15px;
+}
+
+.content__wrapper {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .btns {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .display__name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .user__photo {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    background-color: #888888;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    overflow: hidden;
+
+    .avatarInput {
+      display: none;
+    }
+
+    .photo {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .edit__photo{
+    cursor: pointer;
+    display: flex;
+    overflow: hidden;
+    bottom: 9px;
+    align-items: center;
+    right: 28px;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+
+    .photo {
+      height: 20px;
+      width: 100%;
+    }
+  }
+}
+

@@ -11,17 +11,23 @@ import {EditPageComponent} from './edit-page/edit-page.component';
 import {SharedModule} from "../shared/shared.module";
 import {AuthGuard} from "./shared/auth.guard";
 import {SearchPipe} from "./shared/pipe/search.pipe";
-import { AlertComponent } from './shared/component/alert/alert.component';
-import {AlertService} from "./shared/services/alert.service";
+import {SingUpComponent} from './sing-up/sing-up.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatButtonModule} from "@angular/material/button";
+import { UserProfileModalComponent } from './user-profile/user-profile-modal/user-profile-modal.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const routes: Routes = [
   {
     path: '', component: AdminLayoutComponent, children: [
       {path: '', redirectTo: '/admin/login', pathMatch: 'full'},
       {path: 'login', component: LoginPageComponent},
+      {path: 'sing-up', component: SingUpComponent},
       {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
       {path: 'create', component: CreatePageComponent, canActivate: [AuthGuard]},
       {path: 'post/:id/edit', component: EditPageComponent, canActivate: [AuthGuard]},
+      {path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard]}
     ]
   }
 ]
@@ -34,7 +40,9 @@ const routes: Routes = [
     CreatePageComponent,
     EditPageComponent,
     SearchPipe,
-    AlertComponent,
+    SingUpComponent,
+    UserProfileComponent,
+    UserProfileModalComponent
   ],
   imports: [
     SharedModule,
@@ -42,9 +50,12 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDialogModule
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AlertService],
+  providers: [AuthGuard],
 })
 
 export class AdminModule {
