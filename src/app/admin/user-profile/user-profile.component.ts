@@ -1,10 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from "../shared/services/auth.service";
-import {UserService} from "../../shared/user.service";
-import {Observable} from "rxjs";
-import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
 import {MatDialog} from "@angular/material/dialog";
+import {Observable} from "rxjs";
+
+import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
 import {UserProfileModalComponent} from "./user-profile-modal/user-profile-modal.component";
+import {UserService} from "../shared/services/user.service";
+import {AuthService} from "../shared/services/auth.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -17,6 +18,7 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('imgProfile') img!: ElementRef;
   userDataProfile$: Observable<ResponseForIdentificatedEmailInterface> | undefined;
   displayName$: Observable<string | null> | undefined;
+  editProfileData$: Observable<any> | undefined;
 
   constructor(
     private authService: AuthService,
@@ -31,6 +33,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   editProfile() {
-    this.dialog.open(UserProfileModalComponent);
+    this.dialog.open(UserProfileModalComponent, {
+      panelClass: 'user__profile_container'
+    });
   }
 }

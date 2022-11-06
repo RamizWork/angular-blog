@@ -19,6 +19,7 @@
       <div class="label">Email</div>
       <ng-container *ngIf="userDataProfile$ | async as userDataProfile">
         <div class="name">{{userDataProfile.users[0].email}}</div>
+        <ng-container *ngIf="editProfileData$ | async as editProfile">{{editProfile}}</ng-container>
       </ng-container>
     </div>
   </div>

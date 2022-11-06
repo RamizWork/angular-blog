@@ -1,12 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from "../../shared/post.service";
-import {PostInterface} from "../shared/interfaces/post.interface";
+import {ToastrService} from "ngx-toastr";
 import {Observable, Subscription} from "rxjs";
 
-import {ToastrService} from "ngx-toastr";
-import {UserService} from "../../shared/user.service";
-import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
+import {PostInterface} from "../shared/interfaces/post.interface";
 import {AuthService} from "../shared/services/auth.service";
+import {UserService} from "../shared/services/user.service";
+import {PostService} from "../shared/services/post.service";
 
 @Component({
   selector: 'app-dashboard-page',

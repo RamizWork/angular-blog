@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Edit profile</h1>
+<h1 class="edit__profile_title" mat-dialog-title>Edit profile</h1>
 <div mat-dialog-content>
   <form action="" [formGroup]="form" (ngSubmit)="submit()">
     <div class="content__wrapper">
@@ -16,25 +16,28 @@
         <img class="photo" [src]="form.value.userPhoto" alt="">
       </div>
 
-      <div class="display__name" *ngIf="displayName$ | async as displayName; else noName">
+      <div class="display__name">
         <label for="fullName">Full name</label>
-        <input id="fullName" type="text">
+        <input class="full__name_input" id="fullName" type="text" formControlName="fullName">
       </div>
 
-      <ng-template #noName>
-        <div class="display__name">
-          <label for="noName">Full name</label>
-          <div id="noName">-</div>
-        </div>
-      </ng-template>
+      <div *ngIf="form.get('fullName').touched && form.get('fullName').errors?.required">
+        <small style="color: red">Full name not be empty</small>
+      </div>
 
       <div class="btns">
-        <button class="btn__close" mat-raised-button mat-button mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" mat-button cdkFocusInitial type="submit">Update</button>
+        <button class="btn__close" mat-raised-button mat-button mat-dialog-close (click)="modalClose()">Cancel</button>
+        <button
+          [ngClass]="{invalid: !!form.invalid || isDisabled}"
+          mat-raised-button color="primary"
+          mat-button cdkFocusInitial type="submit"
+          [disabled]="!!form.invalid">Update</button>
       </div>
 
     </div>
   </form>
 </div>
 
+<ng-container *ngIf="displayName$ | async"></ng-container>
+<ng-container *ngIf="userProfile$ | async"></ng-container>
 

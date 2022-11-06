@@ -1,3 +1,7 @@
+h1 {
+  color: black;
+}
+
 .btn__close {
   margin-right: 15px;
 }
@@ -8,15 +12,35 @@
   flex-direction: column;
   justify-content: space-between;
 
+  .invalid {
+    background-color: grey;
+  }
+
   .btns {
     display: flex;
     justify-content: flex-end;
   }
 
-  .display__name{
+  .display__name {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 16px;
+    color: black;
+
+
+    input {
+      all: unset;
+      border: none;
+      background-color: white;
+      border-bottom: 2px solid black;
+
+      &:focus {
+        border: none;
+        background-color: white;
+        border-bottom: 2px solid black;
+      }
+    }
   }
 
   .user__photo {
@@ -38,13 +62,13 @@
     }
   }
 
-  .edit__photo{
+  .edit__photo {
     cursor: pointer;
     display: flex;
     overflow: hidden;
     bottom: 9px;
     align-items: center;
-    right: 28px;
+    right: 36px;
     height: 35px;
     width: 35px;
     position: absolute;

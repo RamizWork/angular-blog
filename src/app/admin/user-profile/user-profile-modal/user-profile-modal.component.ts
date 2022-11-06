@@ -1,7 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {AuthService} from "../../shared/services/auth.service";
+import {MatDialog} from "@angular/material/dialog";
+import {UserService} from "../../shared/services/user.service";
+import {ResponseEditProfileInterface} from "../../shared/interfaces/responseEditProfile.interface";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-profile-modal',
@@ -11,12 +14,14 @@ import {AuthService} from "../../shared/services/auth.service";
 export class UserProfileModalComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload: ElementRef | undefined;
   displayName$: Observable<string | null> | undefined;
+  userProfile$: Observable<ResponseEditProfileInterface> | undefined;
   form: FormGroup | any;
+  isDisabled: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private userService: UserService, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    this.displayName$ = this.authService.getDisplayName();
     this.initializeForm();
   }
 
@@ -55,7 +60,23 @@ export class UserProfileModalComponent implements OnInit {
     }
   }
 
-  submit() {
-    console.log(this.form)
+  modalClose() {
+    this.dialog.closeAll();
   }
+
+  submit() {
+    if (this.form.invalid) {
+      this.isDisabled = true;
+    }
+    const userInfo = {
+      userPhoto: this.form.value.userPhoto,
+      fullName: this.form.value.fullName
+    }
+
+    this.userProfile$ = this.userService.updateProfile(userInfo.userPhoto, userInfo.fullName)
+      .pipe(
+        tap(() => this.modalClose())
+      );
+  }
+
 }

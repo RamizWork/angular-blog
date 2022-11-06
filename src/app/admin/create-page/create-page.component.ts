@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PostInterface} from "../shared/interfaces/post.interface";
-import {PostService} from "../../shared/post.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
+
 import {AuthService} from "../shared/services/auth.service";
+import {PostService} from "../shared/services/post.service";
+import {PostInterface} from "../shared/interfaces/post.interface";
 
 @Component({
   selector: 'app-create-page',

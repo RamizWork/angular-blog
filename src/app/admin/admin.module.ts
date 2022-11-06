@@ -15,8 +15,10 @@ import {SingUpComponent} from './sing-up/sing-up.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
-import { UserProfileModalComponent } from './user-profile/user-profile-modal/user-profile-modal.component';
+import {UserProfileModalComponent} from './user-profile/user-profile-modal/user-profile-modal.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {ChangePasswordComponent} from './change-password/change-password.component';
+import {MatInputModule} from "@angular/material/input";
 
 const routes: Routes = [
   {
@@ -42,7 +44,8 @@ const routes: Routes = [
     SearchPipe,
     SingUpComponent,
     UserProfileComponent,
-    UserProfileModalComponent
+    UserProfileModalComponent,
+    ChangePasswordComponent
   ],
   imports: [
     SharedModule,
@@ -52,7 +55,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatCardModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule
   ],
   exports: [RouterModule],
   providers: [AuthGuard],
