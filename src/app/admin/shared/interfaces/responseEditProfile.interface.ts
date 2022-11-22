@@ -2,7 +2,7 @@ export interface ResponseEditProfileInterface {
   "localId": string;
   "email": string;
   "displayName": string;
-  "photoUrl": string;
+  "photoUrl"?: string;
   "passwordHash": string;
   "providerUserInfo": [
     {

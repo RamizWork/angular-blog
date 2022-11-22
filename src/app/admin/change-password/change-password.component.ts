@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {UserService} from "../shared/services/user.service";
-
-class DialogAnimationsExampleDialog {
-}
+import {tap} from "rxjs/operators";
+import {Router} from "@angular/router";
+import {AuthService} from "../shared/services/auth.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-change-password',
@@ -15,7 +17,13 @@ export class ChangePasswordComponent implements OnInit {
   form: FormGroup | any;
   changePassword$: Observable<any> | undefined;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private toastrService: ToastrService
+  ) {
   }
 
   ngOnInit(): void {
@@ -29,9 +37,28 @@ export class ChangePasswordComponent implements OnInit {
     )
   }
 
+  modalClose() {
+    this.dialog.closeAll();
+  }
+
   submit() {
+    if (this.form.invalid) {
+      return
+    }
+
     const newPassword = this.form.value.newPassword;
 
-    this.changePassword$ = this.userService.changePassword(newPassword);
+    this.changePassword$ = this.userService.changePassword(newPassword).pipe(
+      tap(() => {
+          this.form.reset();
+          this.modalClose();
+          this.toastrService.success('Password changed');
+          this.toastrService.error('Login again');
+          this.router.navigate(['/admin/login']);
+          this.authService.logout();
+        }
+      )
+    );
+
   }
 }

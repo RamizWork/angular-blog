@@ -6,6 +6,8 @@ import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/respo
 import {UserProfileModalComponent} from "./user-profile-modal/user-profile-modal.component";
 import {UserService} from "../shared/services/user.service";
 import {AuthService} from "../shared/services/auth.service";
+import {ProfileDataInterface} from "../shared/interfaces/profileData.intarface";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-profile',
@@ -16,9 +18,11 @@ import {AuthService} from "../shared/services/auth.service";
 export class UserProfileComponent implements OnInit {
 
   @ViewChild('imgProfile') img!: ElementRef;
-  userDataProfile$: Observable<ResponseForIdentificatedEmailInterface> | undefined;
-  displayName$: Observable<string | null> | undefined;
-  editProfileData$: Observable<any> | undefined;
+  loadProfileData$: Observable<ResponseForIdentificatedEmailInterface | null> | undefined;
+  profileData$: Observable<ProfileDataInterface | null> | undefined;
+  localId: any;
+  displayName: any;
+
 
   constructor(
     private authService: AuthService,
@@ -28,12 +32,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userDataProfile$ = this.userService.getUserData();
-    this.displayName$ = this.authService.getDisplayName();
+
+    this.loadProfileData$ = this.userService.getUserData()
+      .pipe(
+        tap(value => {
+            this.localId = value?.users[0].localId;
+            this.displayName = value?.users[0].displayName;
+          }
+        )
+      );
+    this.profileData$ = this.authService.getProfileData();
   }
 
   editProfile() {
     this.dialog.open(UserProfileModalComponent, {
+      data: {
+        localId: this.localId,
+        displayName: this.displayName
+      },
       panelClass: 'user__profile_container'
     });
   }

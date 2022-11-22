@@ -15,10 +15,13 @@ import {SharedModule} from "./shared/shared.module";
 import {HeaderComponent} from './header/header.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
-import {UserService} from "./shared/user.service";
+import {UserService} from "./admin/shared/services/user.service";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
+import {FireBaseService} from "./admin/shared/services/fireBase.service";
+
 
 registerLocaleData(ruLocale, 'ru');
 
@@ -46,9 +49,10 @@ const INTERCEPTOR_PROVIDER: Provider = {
     ToastrModule.forRoot(),
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
-  providers: [INTERCEPTOR_PROVIDER, UserService],
+  providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

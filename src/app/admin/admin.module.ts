@@ -19,6 +19,7 @@ import {UserProfileModalComponent} from './user-profile/user-profile-modal/user-
 import {MatDialogModule} from "@angular/material/dialog";
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {MatInputModule} from "@angular/material/input";
+import {FireBaseService} from "./shared/services/fireBase.service";
 
 const routes: Routes = [
   {
@@ -59,7 +60,7 @@ const routes: Routes = [
     MatInputModule
   ],
   exports: [RouterModule],
-  providers: [AuthGuard],
+  providers: [AuthGuard, FireBaseService],
 })
 
 export class AdminModule {

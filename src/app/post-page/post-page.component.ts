@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
-import {PostService} from "../shared/post.service";
+
 import {Observable} from "rxjs";
 import {PostInterface} from "../admin/shared/interfaces/post.interface";
 import {switchMap} from "rxjs/operators";
+import {PostService} from "../admin/shared/services/post.service";
 
 @Component({
   selector: 'app-post-page',

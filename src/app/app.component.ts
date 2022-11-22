@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./admin/shared/services/auth.service";
 import {Router} from "@angular/router";
-import {UserService} from "./shared/user.service";
 import {Observable} from "rxjs";
+
 import {ResponseForIdentificatedEmailInterface} from "./admin/shared/interfaces/responseForIdentificatedEmail.interface";
+import {UserService} from "./admin/shared/services/user.service";
 
 @Component({
   selector: 'app-root',

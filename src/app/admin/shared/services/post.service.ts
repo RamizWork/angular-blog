@@ -1,20 +1,27 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 import {map} from "rxjs/operators";
 import {PostInterface} from "../interfaces/post.interface";
 import {environment} from "../../../../environments/environment";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class PostService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
   create(post: PostInterface): Observable<PostInterface> {
-    return this.http.post<PostInterface>(`${environment.fbDbUrl}/posts.json`, post)
+    let params = new HttpParams();
+
+    params = params.append('auth', this.authService.token);
+
+    return this.http.post<PostInterface>(`${environment.fbDbUrl}/posts.json`, post, {
+      params
+    })
       .pipe(
         map((response: PostInterface | any) => {
           console.log(response)
@@ -45,7 +52,7 @@ export class PostService {
   getAllPosts(): Observable<PostInterface[]> {
     return this.http.get(`${environment.fbDbUrl}/posts.json`)
       .pipe(
-        map((response: { [key: string]: any }) => {
+        map((response: {[key: string]: any }) => {
             return Object
               .keys(response)
               .map(key => ({
@@ -61,10 +68,20 @@ export class PostService {
   }
 
   updatePost(post: PostInterface): Observable<PostInterface> {
-    return this.http.patch<PostInterface>(`${environment.fbDbUrl}/posts/${post.id}.json`, post);
+    let params = new HttpParams();
+
+    params = params.append('auth', this.authService.token);
+    return this.http.patch<PostInterface>(`${environment.fbDbUrl}/posts/${post.id}.json`, post, {
+      params
+    });
   }
 
   remove(id: string | undefined): Observable<void> {
-    return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`)
+    let params = new HttpParams();
+
+    params = params.append('auth', this.authService.token);
+    return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`, {
+        params
+    })
   }
 }

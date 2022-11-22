@@ -1,10 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {UserService} from "../../shared/services/user.service";
 import {ResponseEditProfileInterface} from "../../shared/interfaces/responseEditProfile.interface";
-import {tap} from "rxjs/operators";
+import {switchMap, tap} from "rxjs/operators";
+import {FireBaseService} from "../../shared/services/fireBase.service";
+import {HttpParams} from "@angular/common/http";
+import {AuthService} from "../../shared/services/auth.service";
+import {ResponseUploadPhotoInterface} from "../../shared/interfaces/responseUploadPhoto.interface";
 
 @Component({
   selector: 'app-user-profile-modal',
@@ -18,7 +22,12 @@ export class UserProfileModalComponent implements OnInit {
   form: FormGroup | any;
   isDisabled: boolean = false;
 
-  constructor(private userService: UserService, private dialog: MatDialog) {
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog,
+    private fireBaseService: FireBaseService,
+    @Inject(MAT_DIALOG_DATA) public data: { localId: string, displayName: string }
+  ) {
   }
 
   ngOnInit(): void {
@@ -27,7 +36,7 @@ export class UserProfileModalComponent implements OnInit {
 
   private initializeForm() {
     this.form = new FormGroup({
-      fullName: new FormControl('', Validators.required),
+      fullName: new FormControl(this.data.displayName, Validators.required),
       userPhoto: new FormControl(),
       avatarFile: new FormControl()
     })
@@ -36,10 +45,10 @@ export class UserProfileModalComponent implements OnInit {
   editPhoto() {
     const fileUpload = this.fileUpload?.nativeElement;
 
+
     fileUpload.onchange = () => {
       const file = fileUpload.files[0];
       const reader = new FileReader();
-      console.log(fileUpload.files)
 
       if (file) {
         reader.readAsDataURL(file);
@@ -49,7 +58,6 @@ export class UserProfileModalComponent implements OnInit {
         const img = new Image();
 
         img.src = reader.result as string;
-
         img.onload = () => {
           this.form.patchValue({
             userPhoto: reader.result,
@@ -69,14 +77,19 @@ export class UserProfileModalComponent implements OnInit {
       this.isDisabled = true;
     }
     const userInfo = {
-      userPhoto: this.form.value.userPhoto,
-      fullName: this.form.value.fullName
+      userPhoto: this.form.value.avatarFile,
+      fullName: this.form.value.fullName,
     }
 
-    this.userProfile$ = this.userService.updateProfile(userInfo.userPhoto, userInfo.fullName)
-      .pipe(
-        tap(() => this.modalClose())
-      );
+    this.userProfile$ = this.fireBaseService.upLoadFileToStorage(userInfo.userPhoto).pipe(
+      switchMap((photoUrl) => {
+        return this.userService.updateProfile(photoUrl, this.form.value.fullName);
+      }),
+      tap(() =>
+        this.modalClose()
+      )
+    );
+
   }
 
 }

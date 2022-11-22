@@ -8,6 +8,9 @@ import {FireBaseAuthResponse} from "../interfaces/fireBaseAuthResponse";
 import {environment} from "../../../../environments/environment";
 import {UserInterface} from "../interfaces/user.interface";
 import {FireBaseSingUpResponseInterface} from "../interfaces/fireBaseSingUpResponse.interface";
+import {ProfileDataInterface} from "../interfaces/profileData.intarface";
+import {UserDataInterface} from "../interfaces/userDataInterface";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: "root"
@@ -15,8 +18,7 @@ import {FireBaseSingUpResponseInterface} from "../interfaces/fireBaseSingUpRespo
 export class AuthService {
 
   private isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private userInfo$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  private displayName$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private profileData$: BehaviorSubject<ProfileDataInterface | null> = new BehaviorSubject<ProfileDataInterface | null>(null);
 
   constructor(private http: HttpClient, private toastrService: ToastrService) {
   }
@@ -37,9 +39,14 @@ export class AuthService {
     return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.apiKey}`, user)
       .pipe(
         tap(value => {
+          const userData: UserDataInterface = {
+            userEmail: value.email,
+            displayName: value.displayName,
+            photoUrl: value.photoUrl
+          }
           AuthService.setSingUpToken(value);
           this.isAuthenticated$.next(true);
-          this.userInfo$.next(value.email);
+          this.profileData$.next(userData);
           localStorage.setItem('id-token', <string>value.idToken);
         }),
         catchError(this.handleErrorForSingUp.bind(this))
@@ -71,9 +78,14 @@ export class AuthService {
     return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
       .pipe(
         tap((value) => {
+          const userData: UserDataInterface = {
+            userEmail: value.email,
+            displayName: value.displayName,
+            photoUrl: value.photoUrl
+          }
           AuthService.setToken(value);
           this.isAuthenticated$.next(true);
-          this.userInfo$.next(value.email);
+          this.profileData$.next(userData);
           localStorage.setItem('id-token', <string>value.idToken);
         }),
         catchError(this.loginHandleError.bind(this))
@@ -97,12 +109,12 @@ export class AuthService {
     return throwError(error);
   }
 
-  getDisplayName(): BehaviorSubject<string | null> {
-    return this.displayName$;
+  setProfileData(data: ProfileDataInterface) {
+    return this.profileData$.next(data)
   }
 
-  getUserInfo(): BehaviorSubject<string | null> {
-    return this.userInfo$;
+  getProfileData(): BehaviorSubject<ProfileDataInterface | null> {
+    return this.profileData$;
   }
 
   getIsAuthenticated(): BehaviorSubject<boolean> {

@@ -17,7 +17,6 @@ export class EditPageComponent implements OnInit, OnDestroy {
 
   form: FormGroup | any;
   post: PostInterface | undefined;
-  isSubmitted: boolean = false;
   updateSubscription$: Subscription | undefined;
 
   constructor(
@@ -46,17 +45,16 @@ export class EditPageComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    this.isSubmitted = true;
+
     this.updateSubscription$ = this.postService.updatePost({
       id: this.post?.id,
       text: this.form.value.text,
       title: this.form.value.title,
       date: new Date()
     }).subscribe(() => {
-      this.isSubmitted = false;
+      this.toastrService.success('Post changed');
+      this.router.navigate(['/admin/dashboard']);
     })
-    this.toastrService.success('Post changed');
-    this.router.navigate(['/admin/dashboard']);
   }
 
   ngOnDestroy(): void {

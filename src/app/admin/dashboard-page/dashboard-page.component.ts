@@ -6,6 +6,7 @@ import {PostInterface} from "../shared/interfaces/post.interface";
 import {AuthService} from "../shared/services/auth.service";
 import {UserService} from "../shared/services/user.service";
 import {PostService} from "../shared/services/post.service";
+import {UserDataInterface} from "../shared/interfaces/userDataInterface";
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,17 +19,23 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   pSub$: Subscription | undefined;
   deleteSub$: Subscription | undefined;
   searchPost: string = '';
-  userEmail$: Observable<string | null> | undefined;
+  userEmail$: Observable<UserDataInterface | null> | undefined;
+
 
   constructor(private postService: PostService, private toastrService: ToastrService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.userEmail$ = this.authService.getUserInfo();
+    this.initializeFireBaseCloud();
+    this.userEmail$ = this.authService.getProfileData();
     this.postService.getAllPosts().subscribe(
       (posts) => {
         this.posts = posts
       }
     )
+  }
+
+  initializeFireBaseCloud() {
+
   }
 
   remove(id: string | undefined) {

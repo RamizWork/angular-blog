@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="profileData$ | async as profileData">
   <div class="wrapper__edit_icon" (click)="editProfile()">
     <img #imgProfile class="icon" [src]="'assets/edit_img2.png'" alt="edit-icon">
   </div>
@@ -8,19 +8,13 @@
   <div class="user__info">
     <div class="first__name_wrapper">
       <div class="label">Full name</div>
-      <ng-container *ngIf="displayName$ | async as displayName; else noName">
-        <div class="name">{{displayName.length ? displayName : '-'}}</div>
-      </ng-container>
-      <ng-template #noName>
-        <div class="name">-</div>
-      </ng-template>
+      <div class="name">{{profileData.displayName ? profileData.displayName : '-'}}</div>
     </div>
     <div>
       <div class="label">Email</div>
-      <ng-container *ngIf="userDataProfile$ | async as userDataProfile">
-        <div class="name">{{userDataProfile.users[0].email}}</div>
-        <ng-container *ngIf="editProfileData$ | async as editProfile">{{editProfile}}</ng-container>
-      </ng-container>
+        <div class="name">{{profileData.userEmail}}</div>
     </div>
   </div>
 </mat-card>
+
+<ng-container *ngIf="loadProfileData$ | async"></ng-container>

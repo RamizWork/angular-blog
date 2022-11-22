@@ -23,13 +23,13 @@
         <td>{{post.emailOwner}}</td>
         <td>
           <button
-            [disabled]="userEmail !== post.emailOwner"
+            [disabled]="userEmail.userEmail !== post.emailOwner"
             class="btn btn-link open"
             [routerLink]="['/admin', 'post', post.id, 'edit']"
           >Edit
           </button>
           <button
-            [disabled]="userEmail !== post.emailOwner"
+            [disabled]="userEmail.userEmail !== post.emailOwner"
             (click)="remove(post.id)"
           >Delete
           </button>

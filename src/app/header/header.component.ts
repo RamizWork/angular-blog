@@ -1,8 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from "../admin/shared/services/auth.service";
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+
+import {ChangePasswordComponent} from "../admin/change-password/change-password.component";
+import {AuthService} from "../admin/shared/services/auth.service";
+import {ProfileDataInterface} from "../admin/shared/interfaces/profileData.intarface";
 
 @Component({
   selector: 'app-header',
@@ -10,27 +13,24 @@ import {tap} from "rxjs/operators";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  profileInfo$: Observable<ProfileDataInterface | null> | undefined
   isAuthenticated$: Observable<boolean> | undefined;
-  isAuthenticated: boolean = false;
-  userInfo$: Observable<string | null> | undefined;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public dialog: MatDialog,
+  ) {
   }
 
   ngOnInit(): void {
-    this.userInfo$ = this.authService.getUserInfo()
-
-    this.isAuthenticated$ = this.authService.getIsAuthenticated().asObservable().pipe(
-      tap((value) => {
-        setTimeout(() => {
-          this.isAuthenticated = value;
-        }, 0)
-      })
-    );
+    this.profileInfo$ = this.authService.getProfileData();
+    this.isAuthenticated$ = this.authService.getIsAuthenticated().asObservable();
   }
 
-
+  openChangePasswordModal() {
+    this.dialog.open(ChangePasswordComponent);
+  }
 
   logout(event: Event) {
     event.preventDefault();

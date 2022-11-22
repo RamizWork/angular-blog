@@ -6,7 +6,9 @@ import {tap} from "rxjs/operators";
 import {ResponseForIdentificatedEmailInterface} from "../interfaces/responseForIdentificatedEmail.interface";
 import {AuthService} from "./auth.service";
 import {environment} from "../../../../environments/environment";
+import {ProfileDataInterface} from "../interfaces/profileData.intarface";
 import {ResponseEditProfileInterface} from "../interfaces/responseEditProfile.interface";
+
 
 
 @Injectable()
@@ -16,38 +18,52 @@ export class UserService {
 
   getUserData(): Observable<ResponseForIdentificatedEmailInterface> {
     const idToken: string | null = localStorage.getItem('id-token');
-    const userInfo$ = this.authService.getUserInfo();
 
     return this.http.post<ResponseForIdentificatedEmailInterface>(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${environment.apiKey}`, {idToken})
       .pipe(
         tap(value => {
-          const email: string = value.users[0].email;
-          userInfo$.next(email);
+          const userData: ProfileDataInterface = {
+            displayName: value.users[0].displayName,
+            photoUrl: value.users[0].photoUrl,
+            userEmail: value.users[0].email
+          }
+          this.authService.setProfileData(userData);
         })
       )
   }
 
-  updateProfile(userPhoto: any, fullName: string): Observable<ResponseEditProfileInterface> {
-    const formData = new FormData();
+  updateProfile(userPhotoUrl: string, fullName: string): Observable<ResponseEditProfileInterface> {
     const idToken: string | null = localStorage.getItem('id-token');
-    formData.append('photoUrl', userPhoto);
-    formData.append('displayName', fullName);
-    formData.append('returnSecureToken', JSON.stringify(true));
-    formData.append('idToken', JSON.stringify(idToken));
-    return this.http.post<ResponseEditProfileInterface>(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.apiKey}`, formData,
-      {
+    const data = {
+      photoUrl: userPhotoUrl,
+      displayName: fullName,
+      returnSecureToken: true,
+      idToken: idToken
+    }
 
-      });
+    return this.http.post<ResponseEditProfileInterface>(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.apiKey}`, data)
+      .pipe(
+        tap((value) => {
+          const profileData: ProfileDataInterface = {
+            displayName: value.displayName,
+            photoUrl: value.photoUrl,
+            userEmail: value.email
+          }
+          this.authService.setProfileData(profileData);
+        })
+      );
   }
 
-  changePassword(newPassword: any): Observable<any> {
-    const formData = new FormData();
+  changePassword(newPassword: string): Observable<any> {
     const idToken: string | null = localStorage.getItem('id-token');
 
-    formData.append('returnSecureToken', JSON.stringify(true));
-    formData.append('idToken', JSON.stringify(idToken));
-    formData.append('password', JSON.stringify(newPassword));
-    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.apiKey}`, formData);
+    const data = {
+      idToken: idToken,
+      returnSecureToken: true,
+      password: newPassword
+    }
+
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.apiKey}`, data);
   }
 
 }

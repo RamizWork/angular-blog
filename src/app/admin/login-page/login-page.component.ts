@@ -1,25 +1,27 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Subject, Subscription} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
 import {ToastrService} from "ngx-toastr";
+import {FireBaseAuthResponse} from "../shared/interfaces/fireBaseAuthResponse";
+import {switchMap, tap} from "rxjs/operators";
+import {UserService} from "../shared/services/user.service";
+import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit {
 
   form: FormGroup | any;
   isSubmitted: boolean = false;
-  errors$: Subject<string> = new Subject<string>();
-  message: string | undefined;
-  routeSub$: Subscription | undefined;
+  login$: Observable<ResponseForIdentificatedEmailInterface | null> | undefined;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -42,18 +44,17 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         password: this.form.value.password,
       };
 
-      this.authService.login(user)
-        .subscribe(
-          () => {
+      this.login$ = this.authService.login(user).pipe(
+        switchMap(() => {
+          return this.userService.getUserData();
+        }),
+        tap(() => {
             this.form.reset();
             this.router.navigate(['/admin', 'dashboard']);
             this.isSubmitted = false;
           }
-        );
+        )
+      )
     }
-  }
-
-  ngOnDestroy(): void {
-    this.routeSub$?.unsubscribe();
   }
 }

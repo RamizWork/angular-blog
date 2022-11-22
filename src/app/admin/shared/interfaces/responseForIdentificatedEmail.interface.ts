@@ -8,8 +8,7 @@ export interface ResponseForIdentificatedEmailInterface {
       "emailVerified": boolean;
       "passwordUpdatedAt": number;
       "photoUrl"?: string;
-      "firstName"?: string;
-      "lastName"?: string;
+      "displayName"?: string;
       "providerUserInfo": [
         {
           "providerId": string;

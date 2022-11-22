@@ -43,13 +43,13 @@ export class CreatePageComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
-    const email = this.authService.getUserInfo().getValue();
+    const userData = this.authService.getProfileData().getValue();
     const post: PostInterface = {
       title: this.form.value.title,
       text: this.form.value.text,
       author: this.form.value.author,
       date: new Date(),
-      emailOwner: email ? email : ''
+      emailOwner: userData?.userEmail ? userData.userEmail : ''
     }
     this.createPost$ = this.postsService.create(post).pipe(
       tap(() => {

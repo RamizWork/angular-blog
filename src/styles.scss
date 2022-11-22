@@ -3,6 +3,9 @@
 @import '~quill/dist/quill.snow.css';
 @import '~ngx-toastr/toastr';
 
+.mat-dialog-container {
+  background-color: white;
+}
 
 :root {
   --primary-color: #dc3545;
