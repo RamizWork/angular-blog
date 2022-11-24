@@ -9,6 +9,7 @@ import {FireBaseService} from "../../shared/services/fireBase.service";
 import {HttpParams} from "@angular/common/http";
 import {AuthService} from "../../shared/services/auth.service";
 import {ResponseUploadPhotoInterface} from "../../shared/interfaces/responseUploadPhoto.interface";
+import {ResponseForIdentificatedEmailInterface} from "../../shared/interfaces/responseForIdentificatedEmail.interface";
 
 @Component({
   selector: 'app-user-profile-modal',
@@ -17,7 +18,7 @@ import {ResponseUploadPhotoInterface} from "../../shared/interfaces/responseUplo
 })
 export class UserProfileModalComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload: ElementRef | undefined;
-  displayName$: Observable<string | null> | undefined;
+  userInfo$: Observable<ResponseForIdentificatedEmailInterface> | undefined;
   userProfile$: Observable<ResponseEditProfileInterface> | undefined;
   form: FormGroup | any;
   isDisabled: boolean = false;
@@ -31,6 +32,7 @@ export class UserProfileModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userInfo$ = this.userService.getUserData();
     this.initializeForm();
   }
 
