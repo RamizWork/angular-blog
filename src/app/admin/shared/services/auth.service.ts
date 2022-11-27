@@ -10,7 +10,6 @@ import {UserInterface} from "../interfaces/user.interface";
 import {FireBaseSingUpResponseInterface} from "../interfaces/fireBaseSingUpResponse.interface";
 import {ProfileDataInterface} from "../interfaces/profileData.intarface";
 import {UserDataInterface} from "../interfaces/userDataInterface";
-import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: "root"

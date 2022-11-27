@@ -57,6 +57,7 @@ h1 {
     }
 
     .photo {
+      object-fit: cover;
       height: 100%;
       width: 100%;
     }
@@ -76,6 +77,7 @@ h1 {
     border-radius: 50%;
 
     .photo {
+      object-fit: fill;
       height: 20px;
       width: 100%;
     }

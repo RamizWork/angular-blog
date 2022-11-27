@@ -24,7 +24,7 @@ export class UserProfileModalComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private fireBaseService: FireBaseService,
-    @Inject(MAT_DIALOG_DATA) public data: { localId: string, displayName: string, photoUrl: string }
+    @Inject(MAT_DIALOG_DATA) public data: { userEmail: string, displayName: string, photoUrl: string }
   ) {
   }
 
@@ -34,12 +34,15 @@ export class UserProfileModalComponent implements OnInit {
 
   private initializeForm() {
     const photoUrl = this.data.photoUrl ? this.data.photoUrl : 'assets/user_icon.png';
+    console.log(photoUrl)
 
     this.form = new FormGroup({
       fullName: new FormControl(this.data.displayName, Validators.required),
-      userPhoto: new FormControl(photoUrl),
+      userPhoto: new FormControl(''),
       avatarFile: new FormControl()
     })
+      this.form.patchValue({userPhoto: photoUrl});
+    console.log(this.form.value);
   }
 
   editPhoto() {
@@ -81,16 +84,20 @@ export class UserProfileModalComponent implements OnInit {
       photoUrl: this.form.value.photoUrl
     }
 
-    this.userProfile$ = this.fireBaseService.upLoadFileToStorage(userInfo.userPhoto).pipe(
-      switchMap((photoUrl) => {
-        return this.userService.updateProfile(photoUrl, this.form.value.fullName);
-      }),
-      tap(() =>
-        this.modalClose()
-      )
-    );
-
+    if (userInfo.userPhoto) {
+      console.log(userInfo.userPhoto)
+      this.userProfile$ = this.fireBaseService.upLoadFileToStorage(userInfo.userPhoto).pipe(
+        switchMap((photoUrl) => {
+          return this.userService.updateProfile(photoUrl, this.form.value.fullName);
+        }),
+        tap(() => this.modalClose())
+      );
+    } else {
+      this.userProfile$ = this.userService.updateProfile(userInfo.photoUrl, this.form.value.fullName)
+        .pipe(
+          tap(() => this.modalClose())
+        );
+    }
   }
-
 
 }

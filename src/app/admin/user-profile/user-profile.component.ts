@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 
-import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
 import {UserProfileModalComponent} from "./user-profile-modal/user-profile-modal.component";
 import {UserService} from "../shared/services/user.service";
 import {AuthService} from "../shared/services/auth.service";
@@ -18,9 +17,8 @@ import {tap} from "rxjs/operators";
 export class UserProfileComponent implements OnInit {
 
   @ViewChild('imgProfile') img!: ElementRef;
-  loadProfileData$: Observable<ResponseForIdentificatedEmailInterface | null> | undefined;
   profileData$: Observable<ProfileDataInterface | null> | undefined;
-  localId: any;
+  userEmail: any;
   displayName: any;
   photoUrl: any;
 
@@ -33,22 +31,21 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProfileData$ = this.userService.getUserData()
+    this.profileData$ = this.authService.getProfileData()
       .pipe(
         tap(value => {
-            this.localId = value?.users[0].localId;
-            this.displayName = value?.users[0].displayName;
-            this.photoUrl = value.users[0].photoUrl;
+            this.userEmail = value?.userEmail;
+            this.displayName = value?.displayName;
+            this.photoUrl = value?.photoUrl;
           }
         )
       );
-    this.profileData$ = this.authService.getProfileData();
   }
 
   editProfile() {
     this.dialog.open(UserProfileModalComponent, {
       data: {
-        localId: this.localId,
+        userEmail: this.userEmail,
         displayName: this.displayName,
         photoUrl: this.photoUrl
       },
