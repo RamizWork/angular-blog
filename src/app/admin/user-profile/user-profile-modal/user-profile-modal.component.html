@@ -13,14 +13,7 @@
                type="file"
                accept="image/jpeg, image/png"
                #fileUpload>
-
-        <ng-container *ngIf="userInfo$ | async as userInfo; else iconPhoto">
-          <img class="photo" [src]="userInfo.users[0].photoUrl" alt="Edit photo">
-        </ng-container>
-
-        <ng-template #iconPhoto>
-          <img class="photo" [src]="'assets/user_icon.png'" alt="">
-        </ng-template>
+        <img class="photo" [src]="form.value.userPhoto" alt="">
       </div>
 
       <div class="display__name">
@@ -46,6 +39,5 @@
   </form>
 </div>
 
-<ng-container *ngIf="userInfo$ | async"></ng-container>
 <ng-container *ngIf="userProfile$ | async"></ng-container>
 

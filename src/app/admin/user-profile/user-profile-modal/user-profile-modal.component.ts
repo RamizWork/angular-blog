@@ -6,10 +6,8 @@ import {UserService} from "../../shared/services/user.service";
 import {ResponseEditProfileInterface} from "../../shared/interfaces/responseEditProfile.interface";
 import {switchMap, tap} from "rxjs/operators";
 import {FireBaseService} from "../../shared/services/fireBase.service";
-import {HttpParams} from "@angular/common/http";
-import {AuthService} from "../../shared/services/auth.service";
-import {ResponseUploadPhotoInterface} from "../../shared/interfaces/responseUploadPhoto.interface";
 import {ResponseForIdentificatedEmailInterface} from "../../shared/interfaces/responseForIdentificatedEmail.interface";
+import {File} from "@angular/compiler-cli/src/ngtsc/file_system/testing/src/mock_file_system";
 
 @Component({
   selector: 'app-user-profile-modal',
@@ -18,7 +16,6 @@ import {ResponseForIdentificatedEmailInterface} from "../../shared/interfaces/re
 })
 export class UserProfileModalComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload: ElementRef | undefined;
-  userInfo$: Observable<ResponseForIdentificatedEmailInterface> | undefined;
   userProfile$: Observable<ResponseEditProfileInterface> | undefined;
   form: FormGroup | any;
   isDisabled: boolean = false;
@@ -27,26 +24,26 @@ export class UserProfileModalComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private fireBaseService: FireBaseService,
-    @Inject(MAT_DIALOG_DATA) public data: { localId: string, displayName: string }
+    @Inject(MAT_DIALOG_DATA) public data: { localId: string, displayName: string, photoUrl: string }
   ) {
   }
 
   ngOnInit(): void {
-    this.userInfo$ = this.userService.getUserData();
     this.initializeForm();
   }
 
   private initializeForm() {
+    const photoUrl = this.data.photoUrl ? this.data.photoUrl : 'assets/user_icon.png';
+
     this.form = new FormGroup({
       fullName: new FormControl(this.data.displayName, Validators.required),
-      userPhoto: new FormControl(),
+      userPhoto: new FormControl(photoUrl),
       avatarFile: new FormControl()
     })
   }
 
   editPhoto() {
     const fileUpload = this.fileUpload?.nativeElement;
-
 
     fileUpload.onchange = () => {
       const file = fileUpload.files[0];
@@ -81,6 +78,7 @@ export class UserProfileModalComponent implements OnInit {
     const userInfo = {
       userPhoto: this.form.value.avatarFile,
       fullName: this.form.value.fullName,
+      photoUrl: this.form.value.photoUrl
     }
 
     this.userProfile$ = this.fireBaseService.upLoadFileToStorage(userInfo.userPhoto).pipe(
@@ -93,5 +91,6 @@ export class UserProfileModalComponent implements OnInit {
     );
 
   }
+
 
 }

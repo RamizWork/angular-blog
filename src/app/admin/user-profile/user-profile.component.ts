@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit {
   profileData$: Observable<ProfileDataInterface | null> | undefined;
   localId: any;
   displayName: any;
+  photoUrl: any;
 
 
   constructor(
@@ -32,12 +33,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.loadProfileData$ = this.userService.getUserData()
       .pipe(
         tap(value => {
             this.localId = value?.users[0].localId;
             this.displayName = value?.users[0].displayName;
+            this.photoUrl = value.users[0].photoUrl;
           }
         )
       );
@@ -48,7 +49,8 @@ export class UserProfileComponent implements OnInit {
     this.dialog.open(UserProfileModalComponent, {
       data: {
         localId: this.localId,
-        displayName: this.displayName
+        displayName: this.displayName,
+        photoUrl: this.photoUrl
       },
       panelClass: 'user__profile_container'
     });
