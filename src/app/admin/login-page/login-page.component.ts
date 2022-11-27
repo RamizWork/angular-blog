@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {switchMap, tap} from "rxjs/operators";
+
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
-import {switchMap, tap} from "rxjs/operators";
 import {UserService} from "../shared/services/user.service";
 import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
 

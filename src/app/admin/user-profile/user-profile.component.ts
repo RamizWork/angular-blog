@@ -1,12 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
 
 import {UserProfileModalComponent} from "./user-profile-modal/user-profile-modal.component";
 import {UserService} from "../shared/services/user.service";
 import {AuthService} from "../shared/services/auth.service";
 import {ProfileDataInterface} from "../shared/interfaces/profileData.intarface";
-import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-profile',

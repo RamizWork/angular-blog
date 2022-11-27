@@ -1,13 +1,12 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {Observable} from "rxjs";
+import {switchMap, tap} from "rxjs/operators";
+
 import {UserService} from "../../shared/services/user.service";
 import {ResponseEditProfileInterface} from "../../shared/interfaces/responseEditProfile.interface";
-import {switchMap, tap} from "rxjs/operators";
 import {FireBaseService} from "../../shared/services/fireBase.service";
-import {ResponseForIdentificatedEmailInterface} from "../../shared/interfaces/responseForIdentificatedEmail.interface";
-import {File} from "@angular/compiler-cli/src/ngtsc/file_system/testing/src/mock_file_system";
 
 @Component({
   selector: 'app-user-profile-modal',
@@ -34,15 +33,13 @@ export class UserProfileModalComponent implements OnInit {
 
   private initializeForm() {
     const photoUrl = this.data.photoUrl ? this.data.photoUrl : 'assets/user_icon.png';
-    console.log(photoUrl)
 
     this.form = new FormGroup({
       fullName: new FormControl(this.data.displayName, Validators.required),
       userPhoto: new FormControl(''),
       avatarFile: new FormControl()
     })
-      this.form.patchValue({userPhoto: photoUrl});
-    console.log(this.form.value);
+    this.form.patchValue({userPhoto: photoUrl});
   }
 
   editPhoto() {
@@ -85,7 +82,6 @@ export class UserProfileModalComponent implements OnInit {
     }
 
     if (userInfo.userPhoto) {
-      console.log(userInfo.userPhoto)
       this.userProfile$ = this.fireBaseService.upLoadFileToStorage(userInfo.userPhoto).pipe(
         switchMap((photoUrl) => {
           return this.userService.updateProfile(photoUrl, this.form.value.fullName);

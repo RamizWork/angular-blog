@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-
 import {map} from "rxjs/operators";
+
 import {PostInterface} from "../interfaces/post.interface";
 import {environment} from "../../../../environments/environment";
 import {AuthService} from "./auth.service";
@@ -24,7 +24,6 @@ export class PostService {
     })
       .pipe(
         map((response: PostInterface | any) => {
-          console.log(response)
             return {
               ...post,
               id: response.name,

@@ -15,7 +15,6 @@ import {UserDataInterface} from "../interfaces/userDataInterface";
   providedIn: "root"
 })
 export class AuthService {
-
   private isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private profileData$: BehaviorSubject<ProfileDataInterface | null> = new BehaviorSubject<ProfileDataInterface | null>(null);
 

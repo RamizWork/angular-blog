@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
-
 import {Observable} from "rxjs";
-import {PostInterface} from "../admin/shared/interfaces/post.interface";
 import {switchMap} from "rxjs/operators";
+
+import {PostInterface} from "../admin/shared/interfaces/post.interface";
 import {PostService} from "../admin/shared/services/post.service";
 
 @Component({
