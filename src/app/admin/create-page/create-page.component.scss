@@ -1,4 +1,12 @@
 form {
   max-width: 600px;
   margin: 0 auto;
+  button {
+    background-color: #4351a9;
+    color: white;
+    &:disabled {
+      color: white;
+      background-color: #bdbdbd;
+    }
+  }
 }

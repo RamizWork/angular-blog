@@ -16,7 +16,6 @@ import {UserDataInterface} from "../shared/interfaces/userDataInterface";
 export class DashboardPageComponent implements OnInit, OnDestroy {
 
   posts: PostInterface[] = []
-  pSub$: Subscription | undefined;
   deleteSub$: Subscription | undefined;
   searchPost: string = '';
   userEmail$: Observable<UserDataInterface | null> | undefined;
@@ -47,11 +46,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.pSub$) {
-      this.pSub$
-    }
     if (this.deleteSub$) {
-      this.pSub$
+      this.deleteSub$?.unsubscribe();
     }
   }
 

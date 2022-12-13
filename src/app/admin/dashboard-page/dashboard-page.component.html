@@ -23,12 +23,14 @@
         <td>{{post.emailOwner}}</td>
         <td>
           <button
+            class="button_edit"
+            mat-raised-button
             [disabled]="userEmail.userEmail !== post.emailOwner"
-            class="btn btn-link open"
             [routerLink]="['/admin', 'post', post.id, 'edit']"
           >Edit
           </button>
           <button
+            mat-raised-button
             [disabled]="userEmail.userEmail !== post.emailOwner"
             (click)="remove(post.id)"
           >Delete

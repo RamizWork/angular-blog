@@ -2,9 +2,6 @@ h1 {
   color: black;
 }
 
-.btn__close {
-  margin-right: 15px;
-}
 
 .content__wrapper {
   width: 320px;
@@ -12,6 +9,16 @@ h1 {
   flex-direction: column;
   justify-content: space-between;
 
+  .btn__close {
+    margin-right: 15px;
+  }
+  .btn__update{
+    background-color: #4351a9;
+    &:disabled {
+      color: white;
+      background-color: #bdbdbd;
+    }
+  }
   .invalid {
     background-color: grey;
   }

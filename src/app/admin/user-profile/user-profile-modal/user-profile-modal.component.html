@@ -29,7 +29,8 @@
         <button class="btn__close" mat-raised-button mat-button mat-dialog-close (click)="modalClose()">Cancel</button>
         <button
           [ngClass]="{invalid: !!form.invalid || isDisabled}"
-          mat-raised-button color="primary"
+          class="btn__update"
+          mat-raised-button
           mat-button type="submit"
           [disabled]="!!form.invalid">Update
         </button>

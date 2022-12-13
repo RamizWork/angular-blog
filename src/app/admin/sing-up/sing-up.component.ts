@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -11,10 +11,10 @@ import {AuthService} from "../shared/services/auth.service";
   templateUrl: './sing-up.component.html',
   styleUrls: ['./sing-up.component.scss']
 })
-export class SingUpComponent implements OnInit {
+export class SingUpComponent implements OnInit, OnDestroy {
 
   form: FormGroup | any;
-  singUpSub$: Subscription = new Subscription();
+  singUpSub$: Subscription | undefined;
   isDisabled: boolean = true;
 
 
@@ -51,4 +51,9 @@ export class SingUpComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.singUpSub$) {
+      this.singUpSub$?.unsubscribe();
+    }
+  }
 }

@@ -1,0 +1,9 @@
+.button__edit {
+  background-color: #4351a9;
+  color: white;
+  margin-bottom: 20px;
+  &:disabled {
+    color: white;
+    background-color: #bdbdbd;
+  }
+}

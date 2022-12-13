@@ -15,7 +15,12 @@
     <div class="form-control">
       <quill-editor formControlName="text"></quill-editor>
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Update</button>
+    <button
+      mat-raised-button
+      class="button__edit"
+      type="submit"
+      [disabled]="form.invalid">Update
+    </button>
   </form>
 </div>
 
