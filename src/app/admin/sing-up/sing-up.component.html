@@ -1,35 +1,38 @@
-<form class="card" [formGroup]="form" (ngSubmit)="submit()">
-  <h2>Sing-up form</h2>
+<mat-card class="card__wrapper">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Sing-up form</h2>
 
-  <div
-    [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
-    class="form-control">
-    <label for="email">Email</label>
-    <input id="email" type="email" formControlName="email">
-    <div *ngIf="form.get('email').touched && form.get('email').invalid">
-      <small class="form-validation" *ngIf="form.get('email').errors.required">Email must not be empty</small>
-      <small class="form-validation" *ngIf="form.get('email').invalid">Enter correct email</small>
+    <div
+      [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
+      class="form-control">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      <div *ngIf="form.get('email').touched && form.get('email').invalid">
+        <small class="form-validation" *ngIf="form.get('email').errors.required">Email must not be empty</small>
+        <small class="form-validation" *ngIf="form.get('email').invalid">Enter correct email</small>
+      </div>
     </div>
-  </div>
 
-  <div
-    [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
-    class="form-control">
-    <label for="password">Password</label>
-    <input id="password" type="text" formControlName="password">
-    <div *ngIf="form.get('password').touched && form.get('password').invalid">
-      <small class="form-validation" *ngIf="form.get('password').errors.required">
-        Password must not be empty
-      </small>
-      <small class="form-validation" *ngIf="form.get('password').errors.minlength && form.get('password').invalid">
-        Length password not be less
-        {{form.get('password').errors.minlength.requiredLength}}
-        symbol. Now length
-        {{form.get('password').errors.minlength.actualLength}}.
-      </small>
+    <div
+      [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+      class="form-control">
+      <label for="password">Password</label>
+      <input id="password" type="text" formControlName="password">
+      <div *ngIf="form.get('password').touched && form.get('password').invalid">
+        <small class="form-validation" *ngIf="form.get('password').errors.required">
+          Password must not be empty
+        </small>
+        <small class="form-validation" *ngIf="form.get('password').errors.minlength && form.get('password').invalid">
+          Length password not be less
+          {{form.get('password').errors.minlength.requiredLength}}
+          symbol. Now length
+          {{form.get('password').errors.minlength.actualLength}}.
+        </small>
+      </div>
     </div>
-  </div>
 
-  <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Sing-up</button>
-</form>
-
+    <div class="button__wrapper">
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Sing-up</button>
+    </div>
+  </form>
+</mat-card>

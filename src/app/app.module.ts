@@ -21,6 +21,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FireBaseService} from "./admin/shared/services/fireBase.service";
+import {MatCardModule} from "@angular/material/card";
 
 
 registerLocaleData(ruLocale, 'ru');
@@ -41,17 +42,18 @@ const INTERCEPTOR_PROVIDER: Provider = {
     PostComponent,
     HeaderComponent,
   ],
-  imports: [
-    SharedModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule
-  ],
+    imports: [
+        SharedModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatCardModule
+    ],
   providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService],
   bootstrap: [AppComponent]
 })

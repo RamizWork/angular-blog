@@ -1,14 +1,16 @@
-<div class="card">
+<mat-card class="card">
   <div class="card-header">
     <h2>{{post.title}}</h2>
     <small>{{post.date | date: 'dd.MM.yyyy'}}</small>
   </div>
-  <div>
+  <div class="card__text">
     <small>{{post.author}}</small>
   </div>
 
+  <div class="card__button">
   <button
+    mat-raised-button
     [routerLink]="['/post', post.id]"
-    class="btn btn-dark"
   >Open</button>
-</div>
+  </div>
+</mat-card>

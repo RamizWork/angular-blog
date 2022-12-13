@@ -1,10 +1,37 @@
-form {
+.card__wrapper {
+  background-color: white;
   max-width: 600px;
+  color: black;
   margin: 0 auto;
+
+  .card {
+    max-width: 600px;
+    margin: 0 auto;
+
+    .form-control {
+      .validation {
+        small {
+          display: block;
+        }
+      }
+    }
+
+    .button__wrapper {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        background-color: #4351a9;
+        width: 120px;
+        &:disabled {
+          background-color: #bdbdbd;
+        }
+      }
+    }
+
+
+  }
+
+
 }
 
-.validation {
-  small {
-    display: block;
-  }
-}
