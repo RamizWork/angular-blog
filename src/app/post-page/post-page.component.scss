@@ -1,26 +1,42 @@
-.post {
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .btn-link {
-      border: 1px solid #111111;
-      padding: 5px 10px 5px 10px;
-      border-radius: 10px;
-      box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.2);
-    }
-    .btn-link:hover {
-      box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.7);
-    }
-  }
+.mat__card {
+  background-color: white;
+  color: #232323;
+  font-weight: 500;
+  margin-bottom: 20px;
 
-  h1 {
-    margin-bottom: 8px;
-  }
+  .post {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-  .info {
-    strong {
-      margin-right: 16px;
+      .post__page_button {
+        width: 120px;
+        background-color: #4351a9;
+      }
+
+      .btn-link {
+        border: 1px solid #111111;
+        padding: 5px 10px 5px 10px;
+        border-radius: 10px;
+        box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-link:hover {
+        box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.7);
+      }
+
+      h1 {
+        margin-bottom: 8px;
+        padding-left: 15px;
+      }
+    }
+
+    .info {
+      strong {
+        margin-right: 16px;
+        padding-left: 15px;
+      }
     }
   }
 }
