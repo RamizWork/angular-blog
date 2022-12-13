@@ -19,14 +19,16 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   deleteSub$: Subscription | undefined;
   searchPost: string = '';
   userEmail$: Observable<UserDataInterface | null> | undefined;
+  getAllPosts$: Subscription | undefined;
 
 
-  constructor(private postService: PostService, private toastrService: ToastrService, private userService: UserService, private authService: AuthService) { }
+  constructor(private postService: PostService, private toastrService: ToastrService, private userService: UserService, private authService: AuthService) {
+  }
 
   ngOnInit(): void {
     this.initializeFireBaseCloud();
     this.userEmail$ = this.authService.getProfileData();
-    this.postService.getAllPosts().subscribe(
+    this.getAllPosts$ = this.postService.getAllPosts().subscribe(
       (posts) => {
         this.posts = posts
       }
@@ -46,9 +48,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.deleteSub$) {
-      this.deleteSub$?.unsubscribe();
-    }
+    this.deleteSub$?.unsubscribe();
+    this.getAllPosts$?.unsubscribe();
   }
 
 }

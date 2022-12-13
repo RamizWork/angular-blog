@@ -51,9 +51,7 @@ export class SingUpComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.singUpSub$) {
-      this.singUpSub$?.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.singUpSub$?.unsubscribe();
   }
 }

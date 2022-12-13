@@ -18,6 +18,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
   form: FormGroup | any;
   post: PostInterface | undefined;
   updateSubscription$: Subscription | undefined;
+  editPageForm$: Subscription| undefined;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -28,7 +30,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.pipe(
+    this.editPageForm$ = this.route.params.pipe(
       switchMap((params: Params) => {
         return this.postService.getPostId([params['id']])
       })
@@ -58,9 +60,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.updateSubscription$) {
-      this.updateSubscription$?.unsubscribe();
-    }
+    this.updateSubscription$?.unsubscribe();
+    this.editPageForm$?.unsubscribe();
   }
 
 }
