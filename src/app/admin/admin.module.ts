@@ -20,6 +20,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {MatInputModule} from "@angular/material/input";
 import {FireBaseService} from "./shared/services/fireBase.service";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 const routes: Routes = [
   {
@@ -48,17 +49,18 @@ const routes: Routes = [
     UserProfileModalComponent,
     ChangePasswordComponent
   ],
-  imports: [
-    SharedModule,
-    FormsModule,
-    CommonModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatInputModule
-  ],
+    imports: [
+        SharedModule,
+        FormsModule,
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatInputModule,
+        MatCheckboxModule
+    ],
   exports: [RouterModule],
   providers: [AuthGuard, FireBaseService],
 })

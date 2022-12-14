@@ -220,6 +220,7 @@ img {
 
   &.invalid {
     color: var(--primary-color);
+
     input {
       border-color: var(--primary-color);
     }
@@ -298,5 +299,23 @@ table th {
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.checkbox__password {
+  .mat-checkbox-frame {
+    background-color: #afafaf;
+  }
+
+  &.mat-checkbox-checked {
+    .mat-checkbox-background {
+      background-color: #5c5cf1;
+    }
+  }
+}

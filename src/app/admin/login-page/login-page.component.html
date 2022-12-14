@@ -18,8 +18,7 @@
       [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
       class="form-control">
       <label for="password">Password</label>
-      <input id="password" type="text" formControlName="password">
-
+      <input id="password" type="password" formControlName="password" #passwordInput>
       <div
         *ngIf="form.get('password').touched && form.get('password').invalid"
         class="validation">
@@ -34,8 +33,14 @@
           {{form.get('password')?.errors.minlength.actualLength}}
         </small>
       </div>
-
     </div>
+    <mat-checkbox
+      class="checkbox__password"
+      (change)="changeShowPassword($event)"
+      #checkBox
+    >Show password
+    </mat-checkbox>
+
     <div class="button__wrapper">
       <button
         type="submit" class="btn btn-primary"

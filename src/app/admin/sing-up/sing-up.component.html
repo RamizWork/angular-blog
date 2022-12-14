@@ -17,7 +17,7 @@
       [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
       class="form-control">
       <label for="password">Password</label>
-      <input id="password" type="text" formControlName="password">
+      <input id="password" type="password" formControlName="password" #passwordInput>
       <div *ngIf="form.get('password').touched && form.get('password').invalid">
         <small class="form-validation" *ngIf="form.get('password').errors.required">
           Password must not be empty
@@ -30,6 +30,11 @@
         </small>
       </div>
     </div>
+    <mat-checkbox
+      class="checkbox__password"
+      (change)="changeShowPassword($event)"
+    >Show password
+    </mat-checkbox>
 
     <div class="button__wrapper">
     <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Sing-up</button>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
@@ -8,6 +8,7 @@ import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
 import {UserService} from "../shared/services/user.service";
 import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
+import { MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-login-page',
@@ -16,9 +17,11 @@ import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/respo
 })
 export class LoginPageComponent implements OnInit {
 
+  @ViewChild('passwordInput') passwordInput: ElementRef | undefined;
   form: FormGroup | any;
   isSubmitted: boolean = false;
   login$: Observable<ResponseForIdentificatedEmailInterface | null> | undefined;
+
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {
   }
@@ -54,6 +57,14 @@ export class LoginPageComponent implements OnInit {
           }
         )
       )
+    }
+  }
+
+  changeShowPassword(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.passwordInput?.nativeElement.setAttribute('type','text');
+    } else {
+      this.passwordInput?.nativeElement.setAttribute('type','password');
     }
   }
 }

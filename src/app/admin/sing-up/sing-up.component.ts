@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-sing-up',
@@ -13,6 +14,7 @@ import {AuthService} from "../shared/services/auth.service";
 })
 export class SingUpComponent implements OnInit, OnDestroy {
 
+  @ViewChild('passwordInput') passwordInput: ElementRef | undefined;
   form: FormGroup | any;
   singUpSub$: Subscription | undefined;
   isDisabled: boolean = true;
@@ -48,6 +50,14 @@ export class SingUpComponent implements OnInit, OnDestroy {
           }
         );
 
+    }
+  }
+
+  changeShowPassword(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.passwordInput?.nativeElement.setAttribute('type','text');
+    } else {
+      this.passwordInput?.nativeElement.setAttribute('type','password');
     }
   }
 
