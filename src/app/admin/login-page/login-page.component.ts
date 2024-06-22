@@ -8,7 +8,7 @@ import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
 import {UserService} from "../shared/services/user.service";
 import {ResponseForIdentificatedEmailInterface} from "../shared/interfaces/responseForIdentificatedEmail.interface";
-import { MatCheckboxChange} from "@angular/material/checkbox";
+import { MatLegacyCheckboxChange as MatCheckboxChange} from "@angular/material/legacy-checkbox";
 
 @Component({
   selector: 'app-login-page',

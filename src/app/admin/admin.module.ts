@@ -13,14 +13,14 @@ import {AuthGuard} from "./shared/auth.guard";
 import {SearchPipe} from "./shared/pipe/search.pipe";
 import {SingUpComponent} from './sing-up/sing-up.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
-import {MatCardModule} from "@angular/material/card";
-import {MatButtonModule} from "@angular/material/button";
+import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {UserProfileModalComponent} from './user-profile/user-profile-modal/user-profile-modal.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
 import {ChangePasswordComponent} from './change-password/change-password.component';
-import {MatInputModule} from "@angular/material/input";
+import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
 import {FireBaseService} from "./shared/services/fireBase.service";
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatLegacyCheckboxModule as MatCheckboxModule} from "@angular/material/legacy-checkbox";
 
 const routes: Routes = [
   {
