@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {switchMap, tap} from "rxjs/operators";
@@ -18,7 +18,7 @@ import { MatCheckboxChange} from "@angular/material/checkbox";
 export class LoginPageComponent implements OnInit {
 
   @ViewChild('passwordInput') passwordInput: ElementRef | undefined;
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   isSubmitted: boolean = false;
   login$: Observable<ResponseForIdentificatedEmailInterface | null> | undefined;
 
@@ -31,9 +31,9 @@ export class LoginPageComponent implements OnInit {
   }
 
   initialize() {
-    this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    this.form = new UntypedFormGroup({
+      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      password: new UntypedFormControl(null, [Validators.required, Validators.minLength(6)]),
     });
   }
 

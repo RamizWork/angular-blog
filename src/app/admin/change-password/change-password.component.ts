@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {UserService} from "../shared/services/user.service";
 import {tap} from "rxjs/operators";
@@ -14,7 +14,7 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   changePassword$: Observable<any> | undefined;
 
   constructor(
@@ -31,8 +31,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   formInitialize() {
-    this.form = new FormGroup({
-        newPassword: new FormControl('', Validators.required)
+    this.form = new UntypedFormGroup({
+        newPassword: new UntypedFormControl('', Validators.required)
       }
     )
   }
