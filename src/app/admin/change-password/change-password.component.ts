@@ -5,7 +5,7 @@ import {UserService} from "../shared/services/user.service";
 import {tap} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {ToastrService} from "ngx-toastr";
 
 @Component({

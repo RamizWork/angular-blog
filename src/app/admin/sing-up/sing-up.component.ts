@@ -5,7 +5,7 @@ import {Subscription} from "rxjs";
 
 import {UserInterface} from "../shared/interfaces/user.interface";
 import {AuthService} from "../shared/services/auth.service";
-import {MatLegacyCheckboxChange as MatCheckboxChange} from "@angular/material/legacy-checkbox";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-sing-up',

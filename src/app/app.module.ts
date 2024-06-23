@@ -16,12 +16,13 @@ import {HeaderComponent} from './header/header.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
 import {UserService} from "./admin/shared/services/user.service";
-import {MatLegacyMenuModule as MatMenuModule} from "@angular/material/legacy-menu";
+import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
-import {MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
 import {FireBaseService} from "./admin/shared/services/fireBase.service";
-import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatCardModule} from "@angular/material/card";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 registerLocaleData(ruLocale, 'ru');
@@ -54,7 +55,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
         MatDialogModule,
         MatCardModule
     ],
-  providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService],
+  providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule {
