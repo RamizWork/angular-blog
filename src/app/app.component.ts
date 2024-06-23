@@ -20,7 +20,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isAuthenticated();
-    this.userData$ = this.userService.getUserData();
+    if (this.authService.token) {
+      this.userData$ = this.userService.getUserData();
+    }
   }
 
   isAuthenticated() {

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ToastrService} from "ngx-toastr";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {switchMap} from "rxjs/operators";
 
 import {PostInterface} from "../shared/interfaces/post.interface";
@@ -15,7 +15,7 @@ import {PostService} from "../shared/services/post.service";
 })
 export class EditPageComponent implements OnInit, OnDestroy {
 
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   post: PostInterface | undefined;
   updateSubscription$: Subscription | undefined;
   editPageForm$: Subscription| undefined;
@@ -36,9 +36,9 @@ export class EditPageComponent implements OnInit, OnDestroy {
       })
     ).subscribe((post: PostInterface) => {
       this.post = post;
-      this.form = new FormGroup({
-        title: new FormControl(post.title, Validators.required),
-        text: new FormControl(post.text, Validators.required)
+      this.form = new UntypedFormGroup({
+        title: new UntypedFormControl(post.title, Validators.required),
+        text: new UntypedFormControl(post.text, Validators.required)
       });
     });
   }

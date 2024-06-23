@@ -22,6 +22,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FireBaseService} from "./admin/shared/services/fireBase.service";
 import {MatCardModule} from "@angular/material/card";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 registerLocaleData(ruLocale, 'ru');
@@ -54,7 +55,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
         MatDialogModule,
         MatCardModule
     ],
-  providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService],
+  providers: [INTERCEPTOR_PROVIDER, UserService, FireBaseService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule {

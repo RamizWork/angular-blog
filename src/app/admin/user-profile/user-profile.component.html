@@ -1,4 +1,4 @@
-<mat-card *ngIf="profileData$ | async as profileData">
+<mat-card appearance="outlined" *ngIf="profileData$ | async as profileData">
   <div class="wrapper__edit_icon" (click)="editProfile()">
     <img #imgProfile class="icon" [src]="'assets/edit_img2.png'" alt="edit-icon">
   </div>

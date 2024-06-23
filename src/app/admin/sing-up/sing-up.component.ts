@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 
@@ -15,7 +15,7 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
 export class SingUpComponent implements OnInit, OnDestroy {
 
   @ViewChild('passwordInput') passwordInput: ElementRef | undefined;
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   singUpSub$: Subscription | undefined;
   isDisabled: boolean = true;
 
@@ -29,9 +29,9 @@ export class SingUpComponent implements OnInit, OnDestroy {
   }
 
   initializeForm(): void {
-    this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+    this.form = new UntypedFormGroup({
+      email: new UntypedFormControl('', [Validators.required, Validators.email]),
+      password: new UntypedFormControl('', [Validators.required, Validators.minLength(6)])
     })
   }
 
