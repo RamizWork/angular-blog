@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {Observable} from "rxjs";
@@ -16,7 +16,7 @@ import {PostInterface} from "../shared/interfaces/post.interface";
 })
 export class CreatePageComponent implements OnInit {
 
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   createPost$: Observable<any> | undefined;
 
   constructor(
@@ -32,10 +32,10 @@ export class CreatePageComponent implements OnInit {
   }
 
   initialize() {
-    this.form = new FormGroup({
-      title: new FormControl(null, [Validators.required]),
-      text: new FormControl(null, [Validators.required]),
-      author: new FormControl(null, [Validators.required]),
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(null, [Validators.required]),
+      text: new UntypedFormControl(null, [Validators.required]),
+      author: new UntypedFormControl(null, [Validators.required]),
     });
   }
 

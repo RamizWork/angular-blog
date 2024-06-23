@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {switchMap, tap} from "rxjs/operators";
@@ -16,7 +16,7 @@ import {FireBaseService} from "../../shared/services/fireBase.service";
 export class UserProfileModalComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload: ElementRef | undefined;
   userProfile$: Observable<ResponseEditProfileInterface> | undefined;
-  form: FormGroup | any;
+  form: UntypedFormGroup | any;
   isDisabled: boolean = false;
 
   constructor(
@@ -34,10 +34,10 @@ export class UserProfileModalComponent implements OnInit {
   private initializeForm() {
     const photoUrl = this.data.photoUrl ? this.data.photoUrl : 'assets/user_icon.png';
 
-    this.form = new FormGroup({
-      fullName: new FormControl(this.data.displayName, Validators.required),
-      userPhoto: new FormControl(''),
-      avatarFile: new FormControl()
+    this.form = new UntypedFormGroup({
+      fullName: new UntypedFormControl(this.data.displayName, Validators.required),
+      userPhoto: new UntypedFormControl(''),
+      avatarFile: new UntypedFormControl()
     })
     this.form.patchValue({userPhoto: photoUrl});
   }

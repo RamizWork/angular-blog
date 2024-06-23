@@ -21,18 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient, private toastrService: ToastrService) {
   }
 
-  get token(): any {
-    const fbExpToken: undefined | string | null = localStorage.getItem('fb-exp-token');
-
-    if (!!fbExpToken && Date.now() > +fbExpToken) {
-      this.logout();
-      this.isAuthenticated$.next(false);
-      return null;
-    }
-    return localStorage.getItem('fb-token');
-  }
-
-  singUp(user: UserInterface): Observable<FireBaseAuthResponse | unknown> {
+  public singUp(user: UserInterface): Observable<FireBaseAuthResponse | unknown> {
     user.returnSecureToken = true;
     return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.apiKey}`, user)
       .pipe(
@@ -51,7 +40,58 @@ export class AuthService {
       )
   }
 
-  handleErrorForSingUp(error: HttpErrorResponse): any {
+  public login(user: UserInterface): Observable<FireBaseAuthResponse | null> {
+    user.returnSecureToken = true;
+    return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
+      .pipe(
+        tap((value) => {
+          const userData: UserDataInterface = {
+            userEmail: value.email,
+            displayName: value.displayName,
+            photoUrl: value.photoUrl
+          }
+          AuthService.setToken(value);
+          this.isAuthenticated$.next(true);
+          this.profileData$.next(userData);
+          localStorage.setItem('id-token', <string>value.idToken);
+        }),
+        catchError(this.loginHandleError.bind(this))
+      )
+  }
+
+  get token(): any {
+    const fbExpToken: undefined | string | null = localStorage.getItem('fb-exp-token');
+
+    if (!!fbExpToken && Date.now() > +fbExpToken) {
+      this.logout();
+      this.isAuthenticated$.next(false);
+      return null;
+    }
+    return localStorage.getItem('fb-token');
+  }
+
+  public setProfileData(data: ProfileDataInterface): void {
+    return this.profileData$.next(data)
+  }
+
+  public getProfileData(): BehaviorSubject<ProfileDataInterface | null> {
+    return this.profileData$;
+  }
+
+  public getIsAuthenticated(): BehaviorSubject<boolean> {
+    return this.isAuthenticated$;
+  }
+
+  public logout(): void {
+    AuthService.setToken(null);
+    this.setIsAuthenticatedStatus(false);
+  }
+
+  public setIsAuthenticatedStatus(status: boolean): void {
+    this.isAuthenticated$.next(status);
+  }
+
+  private handleErrorForSingUp(error: HttpErrorResponse): any {
     const message = error.error.error.message;
 
     switch (message) {
@@ -71,26 +111,7 @@ export class AuthService {
     return throwError(message);
   }
 
-  login(user: UserInterface): Observable<FireBaseAuthResponse | null> {
-    user.returnSecureToken = true;
-    return this.http.post<FireBaseAuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
-      .pipe(
-        tap((value) => {
-          const userData: UserDataInterface = {
-            userEmail: value.email,
-            displayName: value.displayName,
-            photoUrl: value.photoUrl
-          }
-          AuthService.setToken(value);
-          this.isAuthenticated$.next(true);
-          this.profileData$.next(userData);
-          localStorage.setItem('id-token', <string>value.idToken);
-        }),
-        catchError(this.loginHandleError.bind(this))
-      )
-  }
-
-  loginHandleError(error: HttpErrorResponse): Observable<any> {
+  private loginHandleError(error: HttpErrorResponse): Observable<any> {
     const {message} = error.error.error;
 
     switch (message) {
@@ -105,27 +126,6 @@ export class AuthService {
         break;
     }
     return throwError(error);
-  }
-
-  setProfileData(data: ProfileDataInterface) {
-    return this.profileData$.next(data)
-  }
-
-  getProfileData(): BehaviorSubject<ProfileDataInterface | null> {
-    return this.profileData$;
-  }
-
-  getIsAuthenticated(): BehaviorSubject<boolean> {
-    return this.isAuthenticated$;
-  }
-
-  logout() {
-    AuthService.setToken(null);
-    this.setIsAuthenticatedStatus(false);
-  }
-
-  setIsAuthenticatedStatus(status: boolean): void {
-    this.isAuthenticated$.next(status);
   }
 
   private static setSingUpToken(response: FireBaseSingUpResponseInterface) {
@@ -149,5 +149,4 @@ export class AuthService {
       localStorage.clear();
     }
   }
-
 }

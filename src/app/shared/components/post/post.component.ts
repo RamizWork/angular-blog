@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {PostInterface} from "../../../admin/shared/interfaces/post.interface";
 
 @Component({
@@ -6,13 +6,6 @@ import {PostInterface} from "../../../admin/shared/interfaces/post.interface";
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
-
+export class PostComponent {
   @Input() post: PostInterface | any;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

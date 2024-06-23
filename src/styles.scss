@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
-@import '~ngx-toastr/toastr';
 
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   background-color: white;
 }
 
@@ -309,13 +306,19 @@ body {
 }
 
 .checkbox__password {
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   .mat-checkbox-frame {
     background-color: #afafaf;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   &.mat-checkbox-checked {
+    /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
     .mat-checkbox-background {
       background-color: #5c5cf1;
     }
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

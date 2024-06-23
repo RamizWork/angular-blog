@@ -9,14 +9,12 @@ import {environment} from "../../../../environments/environment";
 import {ProfileDataInterface} from "../interfaces/profileData.intarface";
 import {ResponseEditProfileInterface} from "../interfaces/responseEditProfile.interface";
 
-
-
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  getUserData(): Observable<ResponseForIdentificatedEmailInterface> {
+  public getUserData(): Observable<ResponseForIdentificatedEmailInterface> {
     const idToken: string | null = localStorage.getItem('id-token');
 
     return this.http.post<ResponseForIdentificatedEmailInterface>(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${environment.apiKey}`, {idToken})
@@ -32,7 +30,7 @@ export class UserService {
       )
   }
 
-  updateProfile(userPhotoUrl: string, fullName: string): Observable<ResponseEditProfileInterface> {
+  public updateProfile(userPhotoUrl: string, fullName: string): Observable<ResponseEditProfileInterface> {
     const idToken: string | null = localStorage.getItem('id-token');
     const data = {
       photoUrl: userPhotoUrl,
@@ -54,9 +52,8 @@ export class UserService {
       );
   }
 
-  changePassword(newPassword: string): Observable<any> {
+  public changePassword(newPassword: string): Observable<any> {
     const idToken: string | null = localStorage.getItem('id-token');
-
     const data = {
       idToken: idToken,
       returnSecureToken: true,
@@ -65,5 +62,4 @@ export class UserService {
 
     return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.apiKey}`, data);
   }
-
 }
